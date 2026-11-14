@@ -1,1 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flux v1.0 — Клиент Telegram со встроенным VPN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            bg: '#131417',
+            card: '#1C1D22',
+            cardHover: '#24262D',
+            accent: '#CBB8F5',
+            accentDark: '#5B468A',
+            line: '#2D2F39'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .bg-stripes {
+      background: repeating-linear-gradient(-55deg, rgba(138, 117, 168, .22) 0 12px, rgba(42, 38, 51, .35) 12px 24px);
+    }
+    .bg-stripes-bright {
+      background: repeating-linear-gradient(-55deg, #7D6B91 0 10px, #3A3347 10px 20px);
+    }
+    .btn-glow {
+      box-shadow: 0 0 25px rgba(203, 184, 245, .25);
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 35px rgba(203, 184, 245, .45);
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px) scale(.98);
+      transition: opacity .65s cubic-bezier(.16, 1, .3, 1), transform .65s cubic-bezier(.16, 1, .3, 1);
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body class="bg-bg text-gray-100 antialiased selection:bg-accent selection:text-bg overflow-x-hidden">
 
+  <header class="sticky top-0 z-50 border-b border-line bg-bg/90 backdrop-blur-md">
+    <div class="bg-stripes h-2"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-2xl bg-stripes-bright p-0.5 flex items-center justify-center border border-white/20 shadow-md group-hover:scale-105 transition-transform">
+          <div class="w-full h-full rounded-[14px] bg-bg/60 flex items-center justify-center">
+            <span class="font-bold text-sm text-white">flux</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-lg text-white">flux</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30">v1.0</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+        <a href="#features" class="hover:text-accent transition-colors">Особенности</a>
+        <a href="#vpn" class="hover:text-accent transition-colors">Встроенный VPN</a>
+        <a href="#install" class="hover:text-accent transition-colors">Установка</a>
+      </nav>
+
+      <a href="https://github.com/holyn1k/flux/releases/download/Version/flux.apk" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-accent text-bg font-semibold text-sm hover:bg-white transition active:scale-95">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        <span>Скачать APK</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="relative pt-12 pb-20 sm:pt-20 sm:pb-28 overflow-hidden">
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-accent/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 text-center lg:text-left reveal">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12] mb-6">
+            Новый взгляд на общение в <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent via-purple-200 to-indigo-300">flux v1.0</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+            Клиент Telegram, написанный <strong class="text-gray-200">полностью с нуля</strong> — в отличие от ExteraGram и AyuGram, которые лишь добавляют свои функции поверх стандартного исходного кода. Переработанная эргономика, уникальная боковая панель навигации, диагональные акценты и встроенный <strong class="text-gray-200">VLESS VPN</strong> в один клик.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <a href="https://github.com/holyn1k/flux/releases/download/Version/flux.apk" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-accent text-bg font-bold text-base sm:text-lg btn-glow hover:bg-white transition active:scale-95">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              <div class="text-left">
+                <div class="leading-none">Скачать flux.apk</div>
+                <div class="text-[11px] font-medium opacity-75 mt-1">Версия 1.0 • Android 8.0+</div>
+              </div>
+            </a>
+
+            <a href="#features" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-card hover:bg-cardHover text-gray-200 font-semibold border border-line transition-colors">
+              <span>Узнать больше</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs text-gray-500">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Прямая загрузка файла
+            </span>
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              Встроенный VLESS / TLS
+            </span>
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              Мультиаккаунт
+            </span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center reveal" style="transition-delay: 140ms">
+          <div class="relative w-[290px] sm:w-[310px] rounded-[38px] bg-[#0E0F12] p-3 border-2 border-line shadow-2xl">
+            <div class="rounded-[28px] bg-bg overflow-hidden border border-white/5 flex flex-col h-[560px] relative">
+              <div class="bg-stripes px-4 pt-6 pb-4 border-b border-white/5 flex items-center justify-between">
+                <span id="screenTitle" class="font-bold text-base text-white">Чаты и сообщества</span>
+                <span class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-white text-lg leading-none">+</span>
+              </div>
+
+              <div id="chatsView" class="flex-1 p-3 pr-10 space-y-2.5 overflow-hidden">
+                <div class="flex items-center gap-2 pb-2 border-b border-white/5">
+                  <div class="w-10 h-10 rounded-full bg-emerald-900/60 border border-emerald-500/40 flex items-center justify-center text-emerald-300 font-bold text-sm">+</div>
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-400 p-0.5"></div>
+                </div>
+                <div class="flex items-center gap-2 text-[11px]">
+                  <span class="px-3 py-1 rounded-xl bg-emerald-950 text-emerald-300 font-semibold border border-emerald-700/40">Все</span>
+                  <span class="text-gray-400">Каналы <b class="text-indigo-400">71</b></span>
+                  <span class="text-gray-400">Непроч. <b class="text-indigo-400">65</b></span>
+                </div>
+              </div>
+
+              <div id="settingsView" class="hidden flex-1 p-3 pr-10 space-y-3 overflow-hidden">
+                <div class="p-3 rounded-2xl bg-gradient-to-br from-card to-accentDark/30 border border-accent/20">
+                  <div class="flex items-center gap-2.5 mb-2.5">
+                    <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">🔑</div>
+                    <div>
+                      <div class="text-xs font-bold text-white">flux VPN</div>
+                      <div id="vpnState" class="text-[10px] text-emerald-400">Подключён • 12 мс</div>
+                    </div>
+                  </div>
+                  <button type="button" id="toggleVpn" class="w-full py-2 rounded-full bg-accent text-bg text-xs font-bold transition hover:bg-white">
+                    🛡 Лучший сервер активен
+                  </button>
+                </div>
+                <div class="space-y-1.5 text-xs text-gray-300">
+                  <div class="p-2.5 rounded-xl bg-card flex justify-between items-center">
+                    <span>👥 Аккаунты</span><span class="text-gray-500">2 ›</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-card flex justify-between items-center">
+                    <span>🖌 Оформление</span><span class="text-accent text-[10px]">Темы ›</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-card flex justify-between items-center">
+                    <span>🔑 VPN и обход</span><span class="text-emerald-400 text-[10px]">VLESS ›</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-card flex justify-between items-center">
+                    <span>🎁 Подарки и Звёзды</span><span class="text-gray-500">›</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-3 pr-10 border-t border-white/5">
+                <div class="px-3 py-2 rounded-full bg-card border border-line text-xs text-gray-500 flex items-center gap-2">
+                  <span>🔍</span>
+                  <span>Поиск контактов</span>
+                </div>
+              </div>
+
+              <button type="button" id="sideTab" class="bg-stripes-bright absolute top-0 right-0 bottom-0 w-7 border-l border-white/20 flex items-center justify-center cursor-pointer hover:brightness-110 transition">
+                <span id="sideTabLabel" class="text-[11px] font-bold tracking-wider text-white whitespace-nowrap -rotate-90 select-none">Настройки</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-16 sm:py-24 border-t border-line bg-card/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Почему выбирают flux?</h2>
+          <p class="text-gray-400 text-sm sm:text-base">
+            Созданный полностью с нуля клиент, который не копирует чужие наработки, а предлагает собственную архитектуру, плавность и встроенные инструменты.
+          </p>
+        </div>
+
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="p-6 rounded-3xl bg-card border border-accent/40 hover:border-accent transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Написан полностью с нуля</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              В отличие от ExteraGram и AyuGram, которые просто добавляют патчи поверх стандартного клиента, <strong class="text-gray-200">flux</strong> разработан с чистого листа с собственной логикой и интерфейсом.
+            </p>
+          </article>
+
+          <article class="p-6 rounded-3xl bg-card border border-line hover:border-accent/50 transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Встроенный flux VPN</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Поддержка протокола VLESS (WS + TLS), замер пинга в реальном времени и список из 180+ серверов по подписке прямо внутри клиента.
+            </p>
+          </article>
+
+          <article class="p-6 rounded-3xl bg-card border border-line hover:border-accent/50 transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Уникальная боковая полоса</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Фирменная полосатая панель сбоку экрана позволяет мгновенно переключаться между «Чатами и сообществами» и «Настройками» одним касанием.
+            </p>
+          </article>
+
+          <article class="p-6 rounded-3xl bg-card border border-line hover:border-accent/50 transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Авто-обход блокировок</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Если Telegram перестаёт отвечать, клиент автоматически запрашивает VPN-соединение и подключается к серверу с минимальным пингом.
+            </p>
+          </article>
+
+          <article class="p-6 rounded-3xl bg-card border border-line hover:border-accent/50 transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Гибкое оформление и папки</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Несколько цветовых палитр интерфейса, удобные статусы сверху, счётчики непрочитанных сообщений и кастомные папки с эмодзи.
+            </p>
+          </article>
+
+          <article class="p-6 rounded-3xl bg-card border border-line hover:border-accent/50 transition-all reveal">
+            <div class="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Умные жесты управления</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Долгое нажатие на чат открывает закрепление, звук и удаление. Долгое нажатие на сообщение — реакции, ответ, редактирование и пересылку.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="vpn" class="py-16 sm:py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="rounded-3xl bg-gradient-to-br from-card via-[#1E1D29] to-bg border border-line p-6 sm:p-12 reveal">
+          <div class="max-w-3xl mx-auto text-center space-y-5">
+            <span class="inline-block px-3 py-1 rounded-full bg-accent/15 text-accent text-xs font-semibold">
+              VPN и обход блокировок
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white">
+              Стабильная связь без сторонних приложений
+            </h2>
+            <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+              Вам больше не нужно держать в фоне отдельный VPN-клиент, который сажает батарею и режет скорость остальных приложений. В <strong class="text-white">flux</strong> встроен собственный движок с поддержкой VLESS и пользовательских подписок.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="py-16 sm:py-24 border-t border-line bg-card/20">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center reveal">
+        <div class="w-16 h-16 mx-auto rounded-3xl bg-stripes-bright p-1 mb-6 border border-white/20 shadow-lg">
+          <div class="w-full h-full rounded-[20px] bg-bg/70 flex items-center justify-center font-extrabold text-xl text-white">
+            flux
+          </div>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Готовы попробовать flux v1.0?</h2>
+        <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto mb-10">
+          Скачайте установочный файл напрямую на свой Android-смартфон. Вход выполняется по номеру телефона и коду из Telegram или SMS.
+        </p>
+
+        <div id="stepsGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mb-10">
+          <div class="p-5 rounded-2xl bg-card border border-line reveal">
+            <div class="text-accent font-extrabold text-lg mb-1">01. Скачайте APK</div>
+            <p class="text-xs text-gray-400 leading-relaxed">Нажмите на кнопку ниже — браузер сразу начнёт загрузку файла <code class="text-gray-200">flux.apk</code>.</p>
+          </div>
+          <div class="p-5 rounded-2xl bg-card border border-line reveal">
+            <div class="text-accent font-extrabold text-lg mb-1">02. Установите мод</div>
+            <p class="text-xs text-gray-400 leading-relaxed">Откройте скачанный файл в уведомлениях и при необходимости разрешите установку из браузера.</p>
+          </div>
+          <div class="p-5 rounded-2xl bg-card border border-line reveal">
+            <div class="text-accent font-extrabold text-lg mb-1">03. Войдите в аккаунт</div>
+            <p class="text-xs text-gray-400 leading-relaxed">Введите номер телефона и код подтверждения. Все ваши чаты и каналы мгновенно синхронизируются.</p>
+          </div>
+        </div>
+
+        <a href="https://github.com/holyn1k/flux/releases/download/Version/flux.apk" class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-2xl bg-accent text-bg font-extrabold text-lg btn-glow hover:bg-white transition active:scale-95">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span>Скачать flux v1.0 (APK)</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-line py-8 text-center text-xs text-gray-500">
+    <span class="font-bold text-gray-300">flux v1.0</span>
+  </footer>
+
+  <script>
+    const $ = (s, p = document) => p.querySelector(s);
+    const $$ = (s, p = document) => [...p.querySelectorAll(s)];
+
+    let isSettings = false;
+    $('#sideTab').onclick = () => {
+      isSettings = !isSettings;
+      $('#chatsView').classList.toggle('hidden', isSettings);
+      $('#settingsView').classList.toggle('hidden', !isSettings);
+      $('#screenTitle').textContent = isSettings ? 'Настройки' : 'Чаты и сообщества';
+      $('#sideTabLabel').textContent = isSettings ? 'Чаты и сообщества' : 'Настройки';
+    };
+
+    let vpnActive = true;
+    $('#toggleVpn').onclick = (e) => {
+      vpnActive = !vpnActive;
+      const state = $('#vpnState');
+      state.textContent = vpnActive ? 'Подключён • 12 мс' : 'Отключён';
+      state.className = vpnActive ? 'text-[10px] text-emerald-400' : 'text-[10px] text-gray-400';
+      e.target.textContent = vpnActive ? '🛡 Лучший сервер активен' : '🛡 Подключить лучший сервер';
+    };
+
+    $$('#cardsGrid .reveal, #stepsGrid .reveal').forEach((item, i) => {
+      item.style.transitionDelay = `${(i % 6) * 75}ms`;
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    $$('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
